@@ -1,9 +1,12 @@
 import { IconMoon, IconSun } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/style/use-theme";
+import { cn } from "@/lib/utils";
 
 export function ModeToggle() {
   const { theme, setTheme } = useTheme();
+
+  const isDark = theme === "dark";
 
   const toggleTheme = () => {
     setTheme(theme === "light" ? "dark" : "light");
@@ -11,13 +14,23 @@ export function ModeToggle() {
 
   return (
     <Button
-      variant="outline"
+      variant="ghost"
       size="icon"
       onClick={toggleTheme}
-      className="cursor-pointer relative"
+      className="cursor-pointer relative text-muted-foreground"
     >
-      <IconSun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
-      <IconMoon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+      <IconSun
+        className={cn(
+          "h-[1.2rem] w-[1.2rem] transition-all",
+          isDark ? "scale-0 -rotate-90" : "scale-100 rotate-0"
+        )}
+      />
+      <IconMoon
+        className={cn(
+          "absolute h-[1.2rem] w-[1.2rem] transition-all",
+          isDark ? "scale-100 rotate-0" : "scale-0 rotate-90"
+        )}
+      />
       <span className="sr-only">Toggle theme</span>
     </Button>
   );
