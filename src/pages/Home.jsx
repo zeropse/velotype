@@ -7,6 +7,7 @@ import { TypingArea } from "@/components/TypingArea";
 import { StatsDashboard } from "@/components/StatsDashboard";
 import { Badge } from "@/components/ui/badge";
 import SettingsBar from "@/components/Settingsbar";
+import { saveRunAndCheckPB } from "@/lib/history";
 
 const TIME_OPTIONS = [15, 30, 60];
 const WORD_OPTIONS = [50, 75, 100];
@@ -164,24 +165,60 @@ export default function Home() {
         cons = Math.max(0, 100 - cv);
       }
     }
-    setConsistency(Math.round(cons));
+    const finalConsistency = Math.round(cons);
 
-    setWpm(calculatedWpm);
-    setRawWpm(calculatedRawWpm);
-    setAccuracy(calculatedAccuracy);
-    setCharStats({
+    const finalCharStats = {
       correct: correctChars,
       incorrect: incorrectChars,
       extra: 0, // Not implementing extra chars logic yet
       missed: 0, // Not implementing missed chars logic yet
-    });
+    };
+
+    setConsistency(finalConsistency);
+    setWpm(calculatedWpm);
+    setRawWpm(calculatedRawWpm);
+    setAccuracy(calculatedAccuracy);
+    setCharStats(finalCharStats);
+
+    return {
+      wpm: calculatedWpm,
+      rawWpm: calculatedRawWpm,
+      accuracy: calculatedAccuracy,
+      consistency: finalConsistency,
+      charStats: finalCharStats,
+    };
   }, [selectedTime, timeLeft, history]);
 
   const finishGame = useCallback(() => {
     setIsActive(false);
     setIsFinished(true);
-    calculateResults();
-  }, [calculateResults]);
+
+    const result = calculateResults();
+
+    try {
+      saveRunAndCheckPB({
+        time: selectedTime,
+        wordCount,
+        includePunctuation,
+        includeNumbers,
+        language,
+        wpm: result.wpm,
+        rawWpm: result.rawWpm,
+        accuracy: result.accuracy,
+        consistency: result.consistency,
+        charStats: result.charStats,
+      });
+    } catch {
+      // ignore
+    }
+  }, [
+    calculateResults,
+    selectedTime,
+    wordCount,
+    includePunctuation,
+    includeNumbers,
+    language,
+  ]);
 
   // Timer and Stats logic
   useEffect(() => {
