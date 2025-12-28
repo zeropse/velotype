@@ -26,14 +26,20 @@ const SettingsBar = ({
         border border-border/40 text-muted-foreground
       "
       >
-        {/* Section: Mode */}
-        <div className="flex items-center gap-1">
+        {/* Section 1: Mode */}
+        <div className="flex items-center h-full">
           <ConfigButton
             active={includePunctuation}
             onClick={() => handleModeToggleChange("punctuation")}
           >
             @ punctuation
           </ConfigButton>
+
+          <Separator
+            orientation="vertical"
+            className="h-4 w-px mx-2 bg-primary shrink-0 self-center"
+          />
+
           <ConfigButton
             active={includeNumbers}
             onClick={() => handleModeToggleChange("numbers")}
@@ -44,10 +50,10 @@ const SettingsBar = ({
 
         <Separator
           orientation="vertical"
-          className="h-4 bg-muted-foreground/20 mx-2"
+          className="h-4 w-px mx-2 shrink-0 bg-primary"
         />
 
-        {/* Section: Words */}
+        {/* Section 2: Words */}
         <div className="flex items-center gap-1">
           {WORD_OPTIONS.map((count) => (
             <ConfigButton
@@ -62,10 +68,10 @@ const SettingsBar = ({
 
         <Separator
           orientation="vertical"
-          className="h-4 bg-muted-foreground/20 mx-2"
+          className="h-4 w-px mx-2 shrink-0 bg-primary"
         />
 
-        {/* Section: Time */}
+        {/* Section 3: Time */}
         <div className="flex items-center gap-1">
           {TIME_OPTIONS.map((time) => (
             <ConfigButton
