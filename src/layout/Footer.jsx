@@ -32,7 +32,7 @@ export default function Footer() {
             </a>
           </Button>
 
-          <div className="flex items-center gap-1.5 text-muted-foreground/80">
+          <div className="flex items-center gap-3 text-muted-foreground/80">
             <a
               href="https://github.com/zeropse/"
               target="_blank"
