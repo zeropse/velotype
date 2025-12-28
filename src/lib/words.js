@@ -212,7 +212,7 @@ export const generateWords = (count = 50, options = {}) => {
     let word = commonWords[Math.floor(Math.random() * commonWords.length)];
 
     // 2. Handle Numbers (approx 10% chance if enabled)
-    if (numbers && Math.random() < 0.15) {
+    if (numbers && Math.random() < 0.1) {
       word = Math.floor(Math.random() * 1000).toString();
     }
 
