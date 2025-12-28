@@ -1,4 +1,10 @@
+import { useEffect } from "react";
+
 export default function About() {
+  useEffect(() => {
+    document.title = "About | Velotype";
+  }, []);
+
   return (
     <div className="flex-1 px-4 py-10">
       <div className="mx-auto max-w-3xl space-y-8">

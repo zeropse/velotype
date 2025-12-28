@@ -323,6 +323,10 @@ export default function Home() {
     inputRef.current?.focus();
   };
 
+  useEffect(() => {
+    document.title = "Velotype | A minimal typing test.";
+  }, []);
+
   return (
     <div
       className="flex flex-col items-center justify-center min-h-[calc(100vh-100px)] p-8 outline-none"

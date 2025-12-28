@@ -21,6 +21,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { IconTrash } from "@tabler/icons-react";
+import { useEffect } from "react";
 
 const TIME_FILTERS = ["all", 15, 30, 60];
 const WORD_FILTERS = ["all", 50, 75, 100];
@@ -74,6 +75,10 @@ export default function History() {
   }, [filteredRuns]);
 
   const hasRuns = runs.length > 0;
+
+  useEffect(() => {
+    document.title = "History | Velotype";
+  }, []);
 
   return (
     <div className="flex-1 px-4 py-10">
