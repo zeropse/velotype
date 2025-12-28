@@ -2,6 +2,13 @@ import React from "react";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   Drawer,
   DrawerContent,
   DrawerHeader,
@@ -16,11 +23,14 @@ const SettingsBar = ({
   includeNumbers,
   wordCount,
   selectedTime,
+  language,
   handleModeToggleChange,
   handleWordCountSelection,
   handleTimeSelection,
+  handleLanguageChange,
   WORD_OPTIONS = [10, 25, 50, 100],
   TIME_OPTIONS = [15, 30, 60, 120],
+  LANGUAGE_OPTIONS = [],
 }) => {
   return (
     <>
@@ -33,6 +43,34 @@ const SettingsBar = ({
           border border-border/40 text-muted-foreground
         "
         >
+          {/* Section 0: Language / Asset */}
+          <div className="flex items-center gap-2 mr-2">
+            <Select value={language} onValueChange={handleLanguageChange}>
+              <SelectTrigger
+                size="sm"
+                className="text-xs min-w-40 cursor-pointer"
+              >
+                <SelectValue placeholder="Select language" />
+              </SelectTrigger>
+              <SelectContent>
+                {LANGUAGE_OPTIONS.map((opt) => (
+                  <SelectItem
+                    key={opt.value}
+                    value={opt.value}
+                    className="cursor-pointer"
+                  >
+                    {opt.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <Separator
+            orientation="vertical"
+            className="h-4 w-px mx-2 shrink-0 bg-primary"
+          />
+
           {/* Section 1: Mode */}
           <div className="flex items-center h-full">
             <ConfigButton
@@ -113,6 +151,25 @@ const SettingsBar = ({
                 </DrawerTitle>
               </DrawerHeader>
               <div className="space-y-4 text-muted-foreground">
+                {/* Mode */}
+                <div className="space-y-2">
+                  <div className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+                    Language
+                  </div>
+                  <Select value={language} onValueChange={handleLanguageChange}>
+                    <SelectTrigger size="sm" className="text-xs min-w-40">
+                      <SelectValue placeholder="Select language" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {LANGUAGE_OPTIONS.map((opt) => (
+                        <SelectItem key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
                 {/* Mode */}
                 <div className="space-y-2">
                   <div className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">

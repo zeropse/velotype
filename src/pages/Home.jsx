@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { generateWords } from "@/lib/words";
+import { LANGUAGE_OPTIONS } from "@/lib/languages";
 import { Button } from "@/components/ui/button";
 import { IconRefresh } from "@tabler/icons-react";
 import { TypingArea } from "@/components/TypingArea";
@@ -20,6 +21,8 @@ export default function Home() {
   const [wordCount, setWordCount] = useState(50);
   const [includePunctuation, setIncludePunctuation] = useState(false);
   const [includeNumbers, setIncludeNumbers] = useState(false);
+  const [language, setLanguage] = useState("english");
+  const [wordList, setWordList] = useState(null);
 
   // Stats
   const [wpm, setWpm] = useState(0);
@@ -38,6 +41,7 @@ export default function Home() {
   const containerRef = useRef(null);
   const userInputRef = useRef("");
   const wordsRef = useRef("");
+  const loadedLanguagesRef = useRef(new Set());
 
   // Initialize game
   const resetGame = useCallback(
@@ -46,10 +50,12 @@ export default function Home() {
       const count = options.wordCount ?? wordCount;
       const punctuation = options.includePunctuation ?? includePunctuation;
       const numbers = options.includeNumbers ?? includeNumbers;
+      const list = options.wordList ?? wordList;
 
       const newWords = generateWords(count, {
         punctuation,
         numbers,
+        wordList: list,
       });
       setWords(newWords);
       wordsRef.current = newWords;
@@ -71,12 +77,53 @@ export default function Home() {
         inputRef.current.focus();
       }
     },
-    [selectedTime, wordCount, includePunctuation, includeNumbers]
+    [selectedTime, wordCount, includePunctuation, includeNumbers, wordList]
   );
 
   useEffect(() => {
     resetGame();
   }, [resetGame]);
+
+  // Load words for the selected language asset
+  useEffect(() => {
+    const selected = LANGUAGE_OPTIONS.find((opt) => opt.value === language);
+    if (!selected) return;
+
+    let cancelled = false;
+
+    const load = async () => {
+      try {
+        // If we've already loaded this language once in this session,just reset the game without fetching the asset again.
+        if (loadedLanguagesRef.current.has(selected.value)) {
+          if (!cancelled) {
+            resetGame();
+          }
+          return;
+        }
+
+        const res = await fetch(selected.asset);
+        const parsed = await res.json();
+
+        if (!cancelled && Array.isArray(parsed) && parsed.length > 0) {
+          loadedLanguagesRef.current.add(selected.value);
+          setWordList(parsed);
+          resetGame({ wordList: parsed });
+        }
+      } catch {
+        // If asset fails to load, fall back to built-in words.js list
+        if (!cancelled) {
+          setWordList(null);
+          resetGame({ wordList: null });
+        }
+      }
+    };
+
+    load();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [language, resetGame]);
 
   const calculateResults = useCallback(() => {
     const currentInput = userInputRef.current;
@@ -230,6 +277,10 @@ export default function Home() {
     }
   };
 
+  const handleLanguageChange = (value) => {
+    setLanguage(value);
+  };
+
   // Focus input when clicking anywhere in the container
   const handleContainerClick = () => {
     inputRef.current?.focus();
@@ -264,11 +315,14 @@ export default function Home() {
               includeNumbers={includeNumbers}
               wordCount={wordCount}
               selectedTime={selectedTime}
+              language={language}
               handleModeToggleChange={handleModeToggleChange}
               handleWordCountSelection={handleWordCountSelection}
               handleTimeSelection={handleTimeSelection}
               WORD_OPTIONS={WORD_OPTIONS}
               TIME_OPTIONS={TIME_OPTIONS}
+              LANGUAGE_OPTIONS={LANGUAGE_OPTIONS}
+              handleLanguageChange={handleLanguageChange}
             />
           </div>
         )}
@@ -308,11 +362,15 @@ export default function Home() {
                 setWordCount(50);
                 setIncludePunctuation(false);
                 setIncludeNumbers(false);
+                setLanguage("english");
+                setWordList(null);
+                loadedLanguagesRef.current.clear();
                 resetGame({
                   time: 30,
                   wordCount: 50,
                   includePunctuation: false,
                   includeNumbers: false,
+                  wordList: null,
                 });
               }}
               className="gap-2 px-8 text-muted-foreground hover:text-primary cursor-pointer"
