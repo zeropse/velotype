@@ -4,6 +4,7 @@ import Layout from "@/layout/layout";
 import Home from "@/pages/Home";
 import About from "@/pages/About";
 import History from "@/pages/History";
+import NotFound from "@/pages/NotFound";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
             <Route index element={<Home />} />
             <Route path="about" element={<About />} />
             <Route path="history" element={<History />} />
+            <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
       </BrowserRouter>
