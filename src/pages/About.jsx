@@ -42,7 +42,10 @@ export default function About() {
             <ul className="list-disc space-y-1 pl-4 text-sm text-muted-foreground">
               <li>Configurable time tests and word counts.</li>
               <li>Optional punctuation and numbers for harder practice.</li>
+              <li>Multiple English word lists and language assets.</li>
               <li>Live WPM, raw speed, accuracy, and consistency tracking.</li>
+              <li>Per run statistics and personal best tracking.</li>
+              <li>Extensive history and progress visualization.</li>
             </ul>
           </section>
 
