@@ -1,7 +1,7 @@
 export const LANGUAGE_OPTIONS = [
   {
     value: "english",
-    label: "English (core)",
+    label: "English",
     asset: "/assets/english.json",
   },
   {

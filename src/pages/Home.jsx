@@ -85,7 +85,6 @@ export default function Home() {
     resetGame();
   }, [resetGame]);
 
-  // Load words for the selected language asset
   useEffect(() => {
     const selected = LANGUAGE_OPTIONS.find((opt) => opt.value === language);
     if (!selected) return;
@@ -94,7 +93,6 @@ export default function Home() {
 
     const load = async () => {
       try {
-        // If we've already loaded this language once in this session,just reset the game without fetching the asset again.
         if (loadedLanguagesRef.current.has(selected.value)) {
           if (!cancelled) {
             resetGame();
@@ -111,7 +109,6 @@ export default function Home() {
           resetGame({ wordList: parsed });
         }
       } catch {
-        // If asset fails to load, fall back to built-in words.js list
         if (!cancelled) {
           setWordList(null);
           resetGame({ wordList: null });
@@ -135,7 +132,6 @@ export default function Home() {
 
     let correctChars = 0;
     let incorrectChars = 0;
-    // Simple char counting
     for (let i = 0; i < currentInput.length; i++) {
       if (currentInput[i] === currentWords[i]) {
         correctChars++;

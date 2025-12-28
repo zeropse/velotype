@@ -35,101 +35,93 @@ const SettingsBar = ({
   return (
     <>
       {/* Desktop  */}
-      <div className="hidden sm:flex justify-center w-full animate-in fade-in slide-in-from-bottom-4 duration-500">
-        <div
-          className="
-          flex items-center gap-2 p-1.5 px-4 
-          rounded-xl bg-secondary/20 backdrop-blur-sm 
-          border border-border/40 text-muted-foreground
-        "
-        >
-          {/* Section 0: Language / Asset */}
-          <div className="flex items-center gap-2 mr-2">
-            <Select value={language} onValueChange={handleLanguageChange}>
-              <SelectTrigger
-                size="sm"
-                className="text-xs min-w-40 cursor-pointer"
-              >
-                <SelectValue placeholder="Select language" />
-              </SelectTrigger>
-              <SelectContent>
-                {LANGUAGE_OPTIONS.map((opt) => (
-                  <SelectItem
-                    key={opt.value}
-                    value={opt.value}
-                    className="cursor-pointer"
-                  >
-                    {opt.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <Separator
-            orientation="vertical"
-            className="h-4 w-px mx-2 shrink-0 bg-primary"
-          />
-
-          {/* Section 1: Mode */}
-          <div className="flex items-center h-full">
-            <ConfigButton
-              active={includePunctuation}
-              onClick={() => handleModeToggleChange("punctuation")}
-            >
-              @ punctuation
-            </ConfigButton>
+      {!isActive && (
+        <div className="hidden sm:flex justify-center w-full animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="flex items-center gap-2 p-2 bg-card dark:bg-card/30 rounded-xl border border-border text-muted-foreground">
+            <div className="flex items-center gap-2 mr-2">
+              <Select value={language} onValueChange={handleLanguageChange}>
+                <SelectTrigger
+                  size="sm"
+                  className="text-xs min-w-40 cursor-pointer"
+                >
+                  <SelectValue placeholder="Select language" />
+                </SelectTrigger>
+                <SelectContent>
+                  {LANGUAGE_OPTIONS.map((opt) => (
+                    <SelectItem
+                      key={opt.value}
+                      value={opt.value}
+                      className="cursor-pointer"
+                    >
+                      {opt.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
             <Separator
               orientation="vertical"
-              className="h-4 w-px mx-2 bg-primary shrink-0 self-center"
+              className="h-4 w-px mx-2 shrink-0 bg-primary"
             />
 
-            <ConfigButton
-              active={includeNumbers}
-              onClick={() => handleModeToggleChange("numbers")}
-            >
-              # numbers
-            </ConfigButton>
-          </div>
-
-          <Separator
-            orientation="vertical"
-            className="h-4 w-px mx-2 shrink-0 bg-primary"
-          />
-
-          {/* Section 2: Words */}
-          <div className="flex items-center gap-1">
-            {WORD_OPTIONS.map((count) => (
+            <div className="flex items-center h-full">
               <ConfigButton
-                key={count}
-                active={wordCount === count}
-                onClick={() => handleWordCountSelection(count)}
+                active={includePunctuation}
+                onClick={() => handleModeToggleChange("punctuation")}
               >
-                {count}
+                @ Punctuations
               </ConfigButton>
-            ))}
-          </div>
 
-          <Separator
-            orientation="vertical"
-            className="h-4 w-px mx-2 shrink-0 bg-primary"
-          />
+              <Separator
+                orientation="vertical"
+                className="h-4 w-px mx-2 bg-primary shrink-0 self-center"
+              />
 
-          {/* Section 3: Time */}
-          <div className="flex items-center gap-1">
-            {TIME_OPTIONS.map((time) => (
               <ConfigButton
-                key={time}
-                active={selectedTime === time}
-                onClick={() => handleTimeSelection(time)}
+                active={includeNumbers}
+                onClick={() => handleModeToggleChange("numbers")}
               >
-                {time}s
+                # Numbers
               </ConfigButton>
-            ))}
+            </div>
+
+            <Separator
+              orientation="vertical"
+              className="h-4 w-px mx-2 shrink-0 bg-primary"
+            />
+
+            <div className="flex items-center gap-1">
+              {WORD_OPTIONS.map((count) => (
+                <ConfigButton
+                  key={count}
+                  active={wordCount === count}
+                  onClick={() => handleWordCountSelection(count)}
+                >
+                  {count}
+                </ConfigButton>
+              ))}
+            </div>
+
+            <Separator
+              orientation="vertical"
+              className="h-4 w-px mx-2 shrink-0 bg-primary"
+            />
+
+            <div className="flex items-center gap-1">
+              {TIME_OPTIONS.map((time) => (
+                <ConfigButton
+                  key={time}
+                  active={selectedTime === time}
+                  onClick={() => handleTimeSelection(time)}
+                >
+                  {time}s
+                </ConfigButton>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Mobile drawer */}
       {!isActive && (
@@ -156,7 +148,6 @@ const SettingsBar = ({
               </DrawerHeader>
 
               <div className="grid gap-6">
-                {/* Language - Full Width Row */}
                 <div className="flex items-center justify-between gap-4 py-1">
                   <label className="text-xs font-medium text-foreground">
                     Language
@@ -180,9 +171,7 @@ const SettingsBar = ({
 
                 <div className="h-px bg-border/50" />
 
-                {/* Mode & Word Count - Grid Layout */}
                 <div className="space-y-5">
-                  {/* Mode Section */}
                   <div className="space-y-3">
                     <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                       Modifiers
@@ -193,19 +182,18 @@ const SettingsBar = ({
                         onClick={() => handleModeToggleChange("punctuation")}
                         className="flex-1 py-2 text-[11px]"
                       >
-                        @ punct
+                        @ Punctuations
                       </ConfigButton>
                       <ConfigButton
                         active={includeNumbers}
                         onClick={() => handleModeToggleChange("numbers")}
                         className="flex-1 py-2 text-[11px]"
                       >
-                        # nums
+                        # Numbers
                       </ConfigButton>
                     </div>
                   </div>
 
-                  {/* Words Section */}
                   <div className="space-y-3">
                     <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                       Word Count
@@ -224,7 +212,6 @@ const SettingsBar = ({
                     </div>
                   </div>
 
-                  {/* Time Section */}
                   <div className="space-y-3">
                     <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                       Time Limit
@@ -252,7 +239,7 @@ const SettingsBar = ({
   );
 };
 
-// Internal Helper for consistent styling
+// Helper Button
 const ConfigButton = ({ children, active, onClick }) => (
   <Button
     type="button"
@@ -261,7 +248,7 @@ const ConfigButton = ({ children, active, onClick }) => (
     onClick={onClick}
     className={cn(
       "px-3 py-1 text-xs font-medium transition-all duration-200 hover:text-foreground relative h-auto cursor-pointer",
-      !active && "text-muted-foreground/60"
+      !active && "text-muted-foreground"
     )}
   >
     {children}
