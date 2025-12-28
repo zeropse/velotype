@@ -37,33 +37,19 @@ npm install
 pnpm dev
 ```
 
-Then open the URL printed in the terminal.
-
-### Build for Production
-
-```bash
-pnpm build
-```
-
-Preview the production build locally:
-
-```bash
-pnpm preview
-```
-
 ## Project Structure
 
-- [src](src) – application source code
-  - [pages](src/pages) – route-level pages (Home, About, History, NotFound)
-  - [components](src/components) – shared UI and feature components
-  - [layout](src/layout) – layout and navigation
-  - [lib](src/lib) – utilities, language and words helpers, history logic
-  - [style](src/style) – global styles and theme handling
-- [public](public) – static assets and word list JSON files
+```
+src/ – application source code
+├── pages/ – route-level pages (Home, About, History, NotFound)
+├── components/ – shared UI and feature components
+├── layout/ – layout and navigation
+├── lib/ – utilities, language and words helpers, history logic
+└── style/ – global styles and theme handling
+public/ – static assets and word list JSON files
+```
 
 ## Scripts
-
-Defined in [package.json](package.json):
 
 - `pnpm dev` – start development server
 - `pnpm build` – build for production
@@ -72,4 +58,4 @@ Defined in [package.json](package.json):
 
 ## License
 
-This project is licensed under the terms described in [LICENSE](LICENSE).
+This project is licensed under the [MIT LICENSE](LICENSE).
