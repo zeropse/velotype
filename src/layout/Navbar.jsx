@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/style/ModeToggle";
-import { IconKeyboard, IconRefresh, IconInfoCircle } from "@tabler/icons-react";
+import { IconKeyboard, IconInfoCircle } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 
 export default function Navbar() {
@@ -12,11 +12,7 @@ export default function Navbar() {
         </div>
       </Link>
       <div className="flex items-center space-x-4">
-        <Button>
-          <IconRefresh className="h-4 w-4" />
-          Reset
-        </Button>
-        <Button asChild>
+        <Button asChild variant="ghost">
           <Link to="/about">
             <IconInfoCircle className="h-4 w-4" />
             About
