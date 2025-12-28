@@ -14,6 +14,7 @@ import {
 export function StatsDashboard({
   wpm,
   accuracy,
+  rawWpm,
   charStats,
   consistency,
   time,
@@ -25,13 +26,16 @@ export function StatsDashboard({
       <div className="grid grid-cols-[auto_1fr] gap-12">
         {/* Left Stats */}
         <div className="flex flex-col justify-center gap-4 min-w-50">
-          <div>
+          <div className="flex flex-col gap-2">
             <div className="text-3xl text-muted-foreground font-mono">WPM</div>
             <div className="text-8xl font-bold text-primary leading-none">
               {wpm}
             </div>
+            <div className="text-sm text-muted-foreground font-mono">
+              Raw WPM: {rawWpm}
+            </div>
           </div>
-          <div>
+          <div className="flex flex-col gap-2">
             <div className="text-3xl text-muted-foreground font-mono">
               Accuracy
             </div>

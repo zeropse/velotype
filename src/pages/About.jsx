@@ -1,52 +1,68 @@
 export default function About() {
   return (
-    <div className="flex-1 px-4 py-8">
-      <div className="mx-auto max-w-3xl space-y-6">
-        <div className="space-y-2">
-          <h1 className="text-3xl font-semibold tracking-tight">
-            About Velotype
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            Velotype is a minimal, Monkeytype-inspired typing trainer focused on
-            clean visuals, useful stats, and staying out of your way while you
-            type.
-          </p>
+    <div className="flex-1 px-4 py-10">
+      <div className="mx-auto max-w-3xl space-y-8">
+        {/* Intro */}
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <h1 className="text-3xl font-semibold tracking-tight">
+              About Velotype
+            </h1>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Velotype is a minimal, Monkeytype-inspired typing trainer focused
+              on staying out of your way while you build real typing speed and
+              consistency.
+            </p>
+          </div>
+
+          <div className="rounded-xl border border-border/60 bg-card/40 p-4 space-y-2">
+            <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              Why it exists
+            </h2>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              The goal of Velotype is to give you a focused practice space with
+              just the pieces that matter: a clean text area, a handful of
+              settings, and honest stats after every run.
+            </p>
+          </div>
         </div>
 
-        <section className="space-y-2">
-          <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-            What it does
-          </h2>
-          <p className="text-sm text-muted-foreground">
-            The main test page lets you practice typing with configurable time
-            limits, word counts, and optional punctuation or numbers. While you
-            type, Velotype quietly tracks your speed and accuracy in the
-            background.
-          </p>
-        </section>
+        {/* Details */}
+        <div className="space-y-6">
+          <section className="space-y-2">
+            <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              Features
+            </h2>
+            <ul className="list-disc space-y-1 pl-4 text-sm text-muted-foreground">
+              <li>Configurable time tests and word counts.</li>
+              <li>Optional punctuation and numbers for harder practice.</li>
+              <li>Live WPM, raw speed, accuracy, and consistency tracking.</li>
+            </ul>
+          </section>
 
-        <section className="space-y-2">
-          <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-            After each test
-          </h2>
-          <p className="text-sm text-muted-foreground">
-            When a run finishes, you get a detailed breakdown: words per minute,
-            raw speed, accuracy, consistency, and character stats, plus a graph
-            that shows how your performance changed over time.
-          </p>
-        </section>
+          <section className="space-y-2">
+            <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              How to use it
+            </h2>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Pick your preferred time and word settings, then simply start
+              typing. The timer begins on your first keystroke, and the settings
+              bar hides so you can stay locked on the text. When the run ends,
+              check the stats, hit Reset, and try to beat your last result.
+            </p>
+          </section>
 
-        <section className="space-y-2">
-          <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-            Under the hood
-          </h2>
-          <p className="text-sm text-muted-foreground">
-            Velotype is built with React, Vite, Tailwind CSS, shadcn/ui
-            components, and Recharts for the stats visualizations. It&apos;s
-            designed to be fast, keyboard-centric, and easy to extend with new
-            modes or stats in the future.
-          </p>
-        </section>
+          <section className="space-y-2">
+            <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              Built for the web
+            </h2>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Velotype is built with React, Vite, Tailwind CSS, shadcn/ui, and
+              Recharts. It&apos;s open source and designed to be easy to extend
+              with new modes, layouts, and stats.
+            </p>
+          </section>
+        </div>
       </div>
     </div>
   );
