@@ -13,6 +13,25 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes("node_modules")) {
+            if (id.includes("recharts")) return "vendor_recharts";
+            if (id.includes("react-router-dom")) return "vendor_router";
+            if (id.includes("@radix-ui") || id.includes("vaul")) {
+              return "vendor_radix";
+            }
+            if (id.includes("@tabler/icons-react")) {
+              return "vendor_icons";
+            }
+            return "vendor";
+          }
+        },
+      },
+    },
+  },
   server: {
     port: 3000,
   },

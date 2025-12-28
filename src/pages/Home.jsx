@@ -1,16 +1,29 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  lazy,
+  Suspense,
+} from "react";
 import { generateWords } from "@/lib/words";
 import { LANGUAGE_OPTIONS } from "@/lib/languages";
 import { Button } from "@/components/ui/button";
 import { IconRefresh } from "@tabler/icons-react";
 import { TypingArea } from "@/components/TypingArea";
-import { StatsDashboard } from "@/components/StatsDashboard";
 import { Badge } from "@/components/ui/badge";
 import SettingsBar from "@/components/Settingsbar";
 import { saveRunAndCheckPB } from "@/lib/history";
+import { Spinner } from "@/components/ui/spinner";
 
 const TIME_OPTIONS = [15, 30, 60];
 const WORD_OPTIONS = [50, 75, 100];
+
+const StatsDashboard = lazy(() =>
+  import("@/components/StatsDashboard").then((mod) => ({
+    default: mod.StatsDashboard,
+  }))
+);
 
 export default function Home() {
   const [selectedTime, setSelectedTime] = useState(30);
@@ -366,16 +379,24 @@ export default function Home() {
 
         {/* Stats Overlay */}
         {isFinished ? (
-          <StatsDashboard
-            wpm={wpm}
-            accuracy={accuracy}
-            rawWpm={rawWpm}
-            charStats={charStats}
-            consistency={consistency}
-            time={selectedTime}
-            history={history}
-            onRestart={resetGame}
-          />
+          <Suspense
+            fallback={
+              <div className="flex items-center justify-center py-16 text-sm text-muted-foreground">
+                <Spinner />
+              </div>
+            }
+          >
+            <StatsDashboard
+              wpm={wpm}
+              accuracy={accuracy}
+              rawWpm={rawWpm}
+              charStats={charStats}
+              consistency={consistency}
+              time={selectedTime}
+              history={history}
+              onRestart={resetGame}
+            />
+          </Suspense>
         ) : (
           /* Typing Area */
           <TypingArea
