@@ -19,7 +19,6 @@ export default defineConfig({
         manualChunks(id) {
           if (id.includes("node_modules")) {
             if (id.includes("recharts")) return "vendor_recharts";
-            if (id.includes("react-router-dom")) return "vendor_router";
             if (id.includes("@radix-ui") || id.includes("vaul")) {
               return "vendor_radix";
             }
