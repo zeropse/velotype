@@ -324,7 +324,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    document.title = "Velotype | A minimal typing test.";
+    document.title = "Velotype | Minimal, focused typing test to boost speed.";
   }, []);
 
   return (
