@@ -4,8 +4,11 @@ import { Button } from "@/components/ui/button";
 import { IconRefresh } from "@tabler/icons-react";
 import { TypingArea } from "@/components/TypingArea";
 import { StatsDashboard } from "@/components/StatsDashboard";
+import { Badge } from "@/components/ui/badge";
+import SettingsBar from "@/components/Settingsbar";
 
 const TIME_OPTIONS = [15, 30, 60];
+const WORD_OPTIONS = [50, 75, 100];
 
 export default function Home() {
   const [selectedTime, setSelectedTime] = useState(30);
@@ -14,6 +17,9 @@ export default function Home() {
   const [timeLeft, setTimeLeft] = useState(30);
   const [isActive, setIsActive] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
+  const [wordCount, setWordCount] = useState(50);
+  const [includePunctuation, setIncludePunctuation] = useState(false);
+  const [includeNumbers, setIncludeNumbers] = useState(false);
 
   // Stats
   const [wpm, setWpm] = useState(0);
@@ -30,13 +36,21 @@ export default function Home() {
 
   const inputRef = useRef(null);
   const containerRef = useRef(null);
-  const userInputRef = useRef(""); // Ref to access current input in interval
-  const wordsRef = useRef(""); // Ref to access current words in interval
+  const userInputRef = useRef("");
+  const wordsRef = useRef("");
 
   // Initialize game
   const resetGame = useCallback(
-    (time = selectedTime) => {
-      const newWords = generateWords(50);
+    (options = {}) => {
+      const time = options.time ?? selectedTime;
+      const count = options.wordCount ?? wordCount;
+      const punctuation = options.includePunctuation ?? includePunctuation;
+      const numbers = options.includeNumbers ?? includeNumbers;
+
+      const newWords = generateWords(count, {
+        punctuation,
+        numbers,
+      });
       setWords(newWords);
       wordsRef.current = newWords;
 
@@ -57,7 +71,7 @@ export default function Home() {
         inputRef.current.focus();
       }
     },
-    [selectedTime]
+    [selectedTime, wordCount, includePunctuation, includeNumbers]
   );
 
   useEffect(() => {
@@ -100,7 +114,7 @@ export default function Home() {
       const stdDev = Math.sqrt(variance);
       if (mean > 0) {
         const cv = (stdDev / mean) * 100;
-        cons = Math.max(0, 100 - cv); // Clamp to 0
+        cons = Math.max(0, 100 - cv);
       }
     }
     setConsistency(Math.round(cons));
@@ -188,6 +202,32 @@ export default function Home() {
 
   const handleTimeSelection = (time) => {
     setSelectedTime(time);
+    resetGame({ time });
+  };
+
+  const handleWordCountSelection = (count) => {
+    setWordCount(count);
+    resetGame({ wordCount: count });
+  };
+
+  const handleModeToggleChange = (mode) => {
+    if (mode === "punctuation") {
+      const newPunctuation = !includePunctuation;
+      setIncludePunctuation(newPunctuation);
+      resetGame({
+        includePunctuation: newPunctuation,
+        includeNumbers,
+      });
+    }
+
+    if (mode === "numbers") {
+      const newNumbers = !includeNumbers;
+      setIncludeNumbers(newNumbers);
+      resetGame({
+        includePunctuation: includePunctuation,
+        includeNumbers: newNumbers,
+      });
+    }
   };
 
   // Focus input when clicking anywhere in the container
@@ -202,27 +242,34 @@ export default function Home() {
     >
       <div className="max-w-5xl w-full space-y-8">
         {!isFinished && (
-          <div className="flex justify-between items-center animate-in fade-in slide-in-from-top-4">
-            <div className="flex gap-2 bg-secondary/50 p-1 rounded-lg">
-              {TIME_OPTIONS.map((time) => (
-                <Button
-                  key={time}
-                  variant={selectedTime === time ? "default" : "ghost"}
-                  size="sm"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleTimeSelection(time);
-                  }}
-                  className="h-8 px-3"
-                >
-                  {time}s
-                </Button>
-              ))}
+          <div className="space-y-4 animate-in fade-in slide-in-from-top-4">
+            {/* Timer */}
+            <div className="flex justify-center">
+              <Badge
+                variant="secondary"
+                className="px-5 py-2 rounded-full border border-border/60 shadow-sm flex items-center justify-center"
+              >
+                <span className="text-sm uppercase tracking-[0.2em] text-muted-foreground mr-3">
+                  Time left
+                </span>
+                <span className="text-3xl font-bold font-mono text-primary">
+                  {timeLeft}s
+                </span>
+              </Badge>
             </div>
 
-            <div className="text-3xl font-bold font-mono text-yellow-500">
-              {timeLeft}s
-            </div>
+            <SettingsBar
+              isActive={isActive}
+              includePunctuation={includePunctuation}
+              includeNumbers={includeNumbers}
+              wordCount={wordCount}
+              selectedTime={selectedTime}
+              handleModeToggleChange={handleModeToggleChange}
+              handleWordCountSelection={handleWordCountSelection}
+              handleTimeSelection={handleTimeSelection}
+              WORD_OPTIONS={WORD_OPTIONS}
+              TIME_OPTIONS={TIME_OPTIONS}
+            />
           </div>
         )}
 
@@ -257,12 +304,21 @@ export default function Home() {
               size="lg"
               onClick={(e) => {
                 e.stopPropagation();
-                resetGame();
+                setSelectedTime(30);
+                setWordCount(50);
+                setIncludePunctuation(false);
+                setIncludeNumbers(false);
+                resetGame({
+                  time: 30,
+                  wordCount: 50,
+                  includePunctuation: false,
+                  includeNumbers: false,
+                });
               }}
               className="gap-2 px-8 text-muted-foreground hover:text-primary cursor-pointer"
             >
               <IconRefresh className="w-4 h-4" />
-              Restart
+              Reset
             </Button>
           </div>
         )}

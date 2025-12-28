@@ -201,7 +201,43 @@ export const commonWords = [
   "line",
 ];
 
-export const generateWords = (count = 50) => {
-  const shuffled = [...commonWords].sort(() => 0.5 - Math.random());
-  return shuffled.slice(0, count).join(" ");
+const endPunctuation = [".", ",", "!", "?", ";", ":"];
+
+export const generateWords = (count = 50, options = {}) => {
+  const { punctuation = false, numbers = false } = options;
+  let result = [];
+
+  for (let i = 0; i < count; i++) {
+    // 1. Pick a random word
+    let word = commonWords[Math.floor(Math.random() * commonWords.length)];
+
+    // 2. Handle Numbers (approx 10% chance if enabled)
+    if (numbers && Math.random() < 0.15) {
+      word = Math.floor(Math.random() * 1000).toString();
+    }
+
+    // 3. Handle Punctuation (approx 25% chance if enabled)
+    if (punctuation && !/^\d+$/.test(word)) {
+      // Don't punctuate standalone numbers
+      const rand = Math.random();
+
+      if (rand < 0.05) {
+        // Quote wrap (5% chance)
+        word = `"${word}"`;
+      } else if (rand < 0.15) {
+        // Capitalize (10% chance)
+        word = word.charAt(0).toUpperCase() + word.slice(1);
+        // Add end punctuation
+        word +=
+          endPunctuation[Math.floor(Math.random() * endPunctuation.length)];
+      } else if (rand < 0.2) {
+        // Just Capitalize
+        word = word.charAt(0).toUpperCase() + word.slice(1);
+      }
+    }
+
+    result.push(word);
+  }
+
+  return result.join(" ");
 };

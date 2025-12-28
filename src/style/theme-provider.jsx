@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { ThemeContext } from "./use-theme";
+import { ThemeContext } from "@/style/use-theme";
 
 export function ThemeProvider({
   children,
   defaultTheme = "dark",
-  storageKey = "velotype-theme",
+  storageKey = "Velotype-theme",
   ...props
 }) {
   const [theme, setTheme] = useState(
