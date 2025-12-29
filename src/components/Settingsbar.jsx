@@ -36,7 +36,10 @@ const SettingsBar = ({
     <>
       {/* Desktop  */}
       {!isActive && (
-        <div className="hidden sm:flex justify-center w-full animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div
+          className="hidden sm:flex justify-center w-full animate-in fade-in slide-in-from-bottom-4 duration-500"
+          onClick={(e) => e.stopPropagation()}
+        >
           <div className="flex items-center gap-2 p-2 bg-card dark:bg-card/30 rounded-xl border border-border text-muted-foreground">
             <div className="flex items-center gap-2 mr-2">
               <Select value={language} onValueChange={handleLanguageChange}>
@@ -125,7 +128,10 @@ const SettingsBar = ({
 
       {/* Mobile drawer */}
       {!isActive && (
-        <div className="flex justify-center w-full sm:hidden">
+        <div
+          className="flex justify-center w-full sm:hidden"
+          onClick={(e) => e.stopPropagation()}
+        >
           <Drawer direction="top">
             <DrawerTrigger asChild>
               <Button

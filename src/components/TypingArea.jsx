@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -9,6 +10,14 @@ export function TypingArea({
   inputRef,
   containerRef,
 }) {
+  const [isMobile] = useState(() => {
+    if (typeof window === "undefined") return false;
+    const userAgent = navigator.userAgent || "";
+    const mobileRegex =
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+    return mobileRegex.test(userAgent);
+  });
+
   const renderText = () => {
     return words.split("").map((char, index) => {
       let color = "text-muted-foreground";
@@ -49,7 +58,7 @@ export function TypingArea({
         value={userInput}
         onChange={onInputChange}
         className="absolute inset-0 opacity-0 cursor-default z-10"
-        autoFocus
+        autoFocus={!isMobile}
         autoComplete="off"
         autoCorrect="off"
         autoCapitalize="off"
