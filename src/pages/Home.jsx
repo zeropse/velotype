@@ -15,6 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import SettingsBar from "@/components/Settingsbar";
 import { saveRunAndCheckPB } from "@/lib/history";
 import { Spinner } from "@/components/ui/spinner";
+import { isMobile } from "@/lib/utils";
 
 const TIME_OPTIONS = [15, 30, 60];
 const WORD_OPTIONS = [50, 75, 100];
@@ -26,6 +27,7 @@ const StatsDashboard = lazy(() =>
 );
 
 export default function Home() {
+  const [isMobileDevice] = useState(() => isMobile());
   const [selectedTime, setSelectedTime] = useState(30);
   const [words, setWords] = useState("");
   const [userInput, setUserInput] = useState("");
@@ -87,11 +89,18 @@ export default function Home() {
       setCharStats({ correct: 0, incorrect: 0, extra: 0, missed: 0 });
       setHistory([]);
 
-      if (inputRef.current) {
+      if (inputRef.current && !isMobileDevice) {
         inputRef.current.focus();
       }
     },
-    [selectedTime, wordCount, includePunctuation, includeNumbers, wordList]
+    [
+      selectedTime,
+      wordCount,
+      includePunctuation,
+      includeNumbers,
+      wordList,
+      isMobileDevice,
+    ]
   );
 
   useEffect(() => {

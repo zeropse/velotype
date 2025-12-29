@@ -16,6 +16,7 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { cn } from "@/lib/utils";
+import { IconArrowDown } from "@tabler/icons-react";
 
 const SettingsBar = ({
   isActive,
@@ -132,7 +133,7 @@ const SettingsBar = ({
           className="flex justify-center w-full sm:hidden"
           onClick={(e) => e.stopPropagation()}
         >
-          <Drawer direction="top">
+          <Drawer direction="bottom">
             <DrawerTrigger asChild>
               <Button
                 variant="secondary"
@@ -143,11 +144,15 @@ const SettingsBar = ({
               </Button>
             </DrawerTrigger>
 
-            <DrawerContent className="px-4 pb-8 pt-2 border-b rounded-b-3xl bg-background/98 backdrop-blur-md">
-              {/* Subtle handle for top-direction drawer */}
-              <div className="mx-auto mt-2 h-1.5 w-12 rounded-full bg-muted/30 mb-4" />
+            <DrawerContent className="px-4 pb-8 pt-2 border-t rounded-t-3xl bg-background/98 backdrop-blur-md">
+              <div className="my-2 flex justify-center">
+                <span className="inline-flex items-center gap-1 text-[9px] font-medium uppercase tracking-[0.14em] text-muted-foreground/60">
+                  <IconArrowDown className="w-2.5 h-2.5" />
+                  Swipe down to close
+                </span>
+              </div>
 
-              <DrawerHeader className="px-0 pt-0 pb-4">
+              <DrawerHeader className="px-0 pt-0">
                 <DrawerTitle className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70">
                   Configuration
                 </DrawerTitle>
@@ -200,39 +205,41 @@ const SettingsBar = ({
                     </div>
                   </div>
 
-                  <div className="space-y-3">
-                    <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                      Word Count
-                    </span>
-                    <div className="flex flex-wrap gap-2">
-                      {WORD_OPTIONS.map((count) => (
-                        <ConfigButton
-                          key={count}
-                          active={wordCount === count}
-                          onClick={() => handleWordCountSelection(count)}
-                          className="px-4 py-1.5 text-xs min-w-12.5"
-                        >
-                          {count}
-                        </ConfigButton>
-                      ))}
+                  <div className="flex flex-wrap gap-4">
+                    <div className="flex-1 min-w-[45%] space-y-2">
+                      <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                        Word Count
+                      </span>
+                      <div className="flex flex-wrap gap-2">
+                        {WORD_OPTIONS.map((count) => (
+                          <ConfigButton
+                            key={count}
+                            active={wordCount === count}
+                            onClick={() => handleWordCountSelection(count)}
+                            className="px-4 py-1.5 text-xs min-w-12.5"
+                          >
+                            {count}
+                          </ConfigButton>
+                        ))}
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="space-y-3">
-                    <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                      Time Limit
-                    </span>
-                    <div className="flex flex-wrap gap-2">
-                      {TIME_OPTIONS.map((time) => (
-                        <ConfigButton
-                          key={time}
-                          active={selectedTime === time}
-                          onClick={() => handleTimeSelection(time)}
-                          className="px-4 py-1.5 text-xs min-w-12.5"
-                        >
-                          {time}s
-                        </ConfigButton>
-                      ))}
+                    <div className="flex-1 min-w-[45%] space-y-2">
+                      <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                        Time Limit
+                      </span>
+                      <div className="flex flex-wrap gap-2">
+                        {TIME_OPTIONS.map((time) => (
+                          <ConfigButton
+                            key={time}
+                            active={selectedTime === time}
+                            onClick={() => handleTimeSelection(time)}
+                            className="px-4 py-1.5 text-xs min-w-12.5"
+                          >
+                            {time}s
+                          </ConfigButton>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
